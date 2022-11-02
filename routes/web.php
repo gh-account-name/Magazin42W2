@@ -24,6 +24,8 @@ Route::get('/registration', [\App\Http\Controllers\PageController::class, 'regis
 
 Route::get('/auth', [\App\Http\Controllers\PageController::class, 'authPage'])->name('authPage');
 
+Route::get('/userCabinet', [\App\Http\Controllers\PageController::class, 'cabinetPage'])->name('cabinetPage');
+
 //--Функции
 
 Route::post('/registration/save', [\App\Http\Controllers\UserController::class, 'register'])->name('register');
@@ -31,3 +33,13 @@ Route::post('/registration/save', [\App\Http\Controllers\UserController::class, 
 Route::post('/login', [\App\Http\Controllers\UserController::class, 'auth'])->name('auth');
 
 Route::get('/logout', [\App\Http\Controllers\UserController::class, 'logout'])->name('logout');
+
+//--Мидлвар
+
+Route::group(['middleware'=>['auth', 'admin'], 'prefix'=>'admin'], function (){
+
+    Route::post('/addCategory', [\App\Http\Controllers\CategryController::class, 'addCategory'])->name('addCategory');
+
+    Route::get('/', [\App\Http\Controllers\PageController::class, 'adminPage'])->name('adminPage');
+
+});

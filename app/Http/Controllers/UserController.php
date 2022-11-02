@@ -50,7 +50,7 @@ class UserController extends Controller
         $user->password = md5($request->password);
         $user->save();
 
-        return redirect()->route('authPage');
+        return redirect()->route('authPage')->with('success', 'Вы успешно зарегистрировались');
     }
 
     public function auth(Request $request){
@@ -64,7 +64,7 @@ class UserController extends Controller
              'password.min'=>'Минимальная длина пароля: 6 символов',
              'password.max'=>'Максимальная длина пароля: 12 символов',
          ]);
-         
+
          if ($validation->fails()){
             return response()->json($validation->errors(), 400);
          }
@@ -76,12 +76,12 @@ class UserController extends Controller
             if($user->role === 'admin'){
                 return redirect()->route('adminPage');
             } else {
-                return redirect()->route('aboutUs');
+                return redirect()->route('cabinetPage');
             }
          } else {
-            return redirect()->back();
+            return response()->json('Неверный логин или пароль', 403);
          }
-         
+
     }
 
     public function logout(){

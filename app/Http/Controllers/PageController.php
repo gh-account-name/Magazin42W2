@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categry;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -12,5 +13,14 @@ class PageController extends Controller
 
     public function authPage(){
         return view('user.auth');
+    }
+
+    public function adminPage(){
+        $categories = Categry::all();
+        return view('admin.controls', ['categories'=>$categories]);
+    }
+
+    public function cabinetPage(){
+        return view('user.cabinet');
     }
 }

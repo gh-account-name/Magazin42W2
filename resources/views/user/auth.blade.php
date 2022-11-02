@@ -6,19 +6,25 @@
 
 @section('main')
     <div class="container" id="authApp">
-        <div class="row justify-content-center"><h2 class="text-center m-5">Авторизация</h2></div>
+        <div class="row justify-content-center"><h2 class="text-center text-white m-5">Авторизация</h2></div>
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-4" :class="message ? 'alert alert-danger': ''">
+                @{{message}}
+            </div>
+        </div>
 
         <div class="row justify-content-center">
             <form class="col-5" id="form" @submit.prevent="Auth">
                 <div class="mb-3">
-                    <label for="login" class="form-label">Логин</label>
+                    <label for="login" class="form-label text-white">Логин</label>
                     <input type="text" class="form-control" id="login" name="login" :class="errors.login ? 'is-invalid' : '' ">
                     <div :class="errors.login ? 'invalid-feedback' : '' " v-for="error in errors.login">
                         @{{error}}
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Пароль</label>
+                    <label for="password" class="form-label text-white">Пароль</label>
                     <input type="password" class="form-control" name="password" id="password" :class="errors.password ? 'is-invalid' : '' ">
                     <div :class="errors.password ? 'invalid-feedback' : '' " v-for="error in errors.password">
                         @{{error}}
@@ -33,6 +39,7 @@
             data(){
                 return {
                     errors: [],
+                    message:'',
                 }
             },
             methods: {
@@ -48,9 +55,16 @@
                     });
                     if (response.status === 400){
                         this.errors = await response.json()
+                        // setTimeout(()=>{
+                        //     this.errors = []
+                        // }, 5000)
                     }
                     if (response.status === 200){
                         window.location = response.url
+                    }
+
+                    if (response.status === 403){
+                        this.message = await response.json();
                     }
                 }
             }
