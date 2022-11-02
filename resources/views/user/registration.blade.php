@@ -18,31 +18,49 @@
                 </div>
                 <div class="mb-3">
                     <label for="surname" class="form-label">Фамилия</label>
-                    <input type="text" class="form-control" id="surname" name="surname">
+                    <input type="text" class="form-control" id="surname" name="surname" :class="errors.surname ? 'is-invalid' : '' ">
+                    <div :class="errors.surname ? 'invalid-feedback' : '' " v-for="error in errors.surname">
+                        @{{error}}
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="patronymic" class="form-label">Отчество</label>
-                    <input type="text" class="form-control" id="patronymic" name="patronymic">
+                    <input type="text" class="form-control" id="patronymic" name="patronymic" :class="errors.patronymic ? 'is-invalid' : '' ">
+                    <div :class="errors.patronymic ? 'invalid-feedback' : '' " v-for="error in errors.patronymic">
+                        @{{error}}
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="login" class="form-label">Логин</label>
-                    <input type="text" class="form-control" id="login" name="login">
+                    <input type="text" class="form-control" id="login" name="login" :class="errors.login ? 'is-invalid' : '' ">
+                    <div :class="errors.login ? 'invalid-feedback' : '' " v-for="error in errors.login">
+                        @{{error}}
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email">
+                    <input type="email" class="form-control" id="email" name="email" :class="errors.email ? 'is-invalid' : '' ">
+                    <div :class="errors.email ? 'invalid-feedback' : '' " v-for="error in errors.email">
+                        @{{error}}
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Пароль</label>
-                    <input type="password" class="form-control" name="password" id="password">
+                    <label for="password" class="form-label">Пароль</label>
+                    <input type="password" class="form-control" name="password" id="password" :class="errors.password ? 'is-invalid' : '' ">
+                    <div :class="errors.password ? 'invalid-feedback' : '' " v-for="error in errors.password">
+                        @{{error}}
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Повторение пароля</label>
+                    <label for="password_confirmation" class="form-label">Повторение пароля</label>
                     <input type="password" class="form-control" name="password_confirmation">
                 </div>
                 <div class="mb-3 form-check">
-                    <input type="checkbox" class="rules" id="rules" name="rules">
-                    <label class="form-check-label" for="rules">Согласие на обработку данных</label>
+                    <input type="checkbox" class="rules" id="rules" name="rules" :class="errors.rules ? 'is-invalid' : '' ">
+                    <label class="form-check-label" for="rules" style="margin-left: 5px; cursor:pointer">Согласие на обработку данных</label>
+                    <div :class="errors.rules ? 'invalid-feedback' : '' " v-for="error in errors.rules">
+                        @{{error}}
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary col-5" style="margin-left: 50%; transform: translateX(-50%)">Регистрация</button>
             </form>
