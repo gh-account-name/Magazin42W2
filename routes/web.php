@@ -40,6 +40,6 @@ Route::group(['middleware'=>['auth', 'admin'], 'prefix'=>'admin'], function (){
 
     Route::post('/addCategory', [\App\Http\Controllers\CategryController::class, 'addCategory'])->name('addCategory');
 
-    Route::get('/', [\App\Http\Controllers\PageController::class, 'adminPage'])->name('adminPage');
+    Route::get('/', [\App\Http\Controllers\PageController::class, 'categoriesPage'])->name('categoriesPage');
 
 });

@@ -15,9 +15,9 @@ class PageController extends Controller
         return view('user.auth');
     }
 
-    public function adminPage(){
+    public function categoriesPage(){
         $categories = Categry::all();
-        return view('admin.controls', ['categories'=>$categories]);
+        return view('admin.categories', ['categories'=>$categories]);
     }
 
     public function cabinetPage(){
