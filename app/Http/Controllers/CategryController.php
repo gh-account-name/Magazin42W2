@@ -26,4 +26,22 @@ class CategryController extends Controller
 
         return response()->json('Категория успешно добавлена', 200);
     }
+
+    public function getCategories(){
+        $categories = Categry::all();
+        return response()->json([
+            'categories'=>$categories,
+        ], 200);
+    }
+
+    public function update(Request $request, Categry $category){
+        $category->title = $request->title;
+        $category->update();
+        return redirect()->route('categoriesPage');
+    }
+
+    public function destroy(Categry $category){
+        $category->delete();
+        return redirect()->back();
+    }
 }

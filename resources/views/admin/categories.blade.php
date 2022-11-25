@@ -13,7 +13,7 @@
 
     <div class="container d-flex flex-column align-items-center" id="addPage">
         <h2 class="mt-5">Создать категорию</h2>
-        
+
         <div v-if="message" class="row d-flex justify-content-center mt-5">
             <div class="col-12" :class="message ? 'alert alert-success': ''">
                 @{{message}}
@@ -43,10 +43,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($categories as $key => $category)
-                        <tr>
-                            <th scope="row">{{$key+1}}</th>
-                            <td>{{$category->title}}</td>
+                        <tr v-for="(category, index) in categories">
+                            <th scope="row">@{{index+1}}</th>
+                            <td>@{{category.title}}</td>
                             <td class="d-flex justify-content-sm-around">
                                 <a href=""><button type="button" class="btn btn-success">Редактировать</button></a>
                                 <form action="" method="post">
@@ -56,7 +55,6 @@
                                 </form>
                             </td>
                         </tr>
-                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -69,6 +67,7 @@
                 return{
                     errors:[],
                     message:'',
+                    categories:[],
                 }
             },
             methods:{
@@ -91,8 +90,19 @@
                         this.message = await response.json();
                     }
 
+                    this.getCategories();
+
                     document.querySelector('#form .form-control').value = '';
-                }
+                },
+
+                async getCategories(){
+                    const response = await fetch('{{route('getCategories')}}');
+                    const data = await response.json();
+                    this.categories = data.categories;
+                },
+            },
+            mounted(){
+                this.getCategories();
             }
         }
         Vue.createApp(Add).mount('#addPage');

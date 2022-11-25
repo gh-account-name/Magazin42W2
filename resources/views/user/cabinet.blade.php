@@ -5,5 +5,7 @@
 @endsection
 
 @section('main')
-    <h1>Личный кабинет</h1>
+    <div class="container">
+        <h1 class="text-center mt-5">Личный кабинет</h1>
+    </div>
 @endsection

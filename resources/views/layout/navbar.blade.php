@@ -43,7 +43,7 @@
                         </li>
                     @endif
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Личный кабинет</a>
+                        <a class="nav-link text-white" href="{{route('cabinetPage')}}">Личный кабинет</a>
                     </li>
                     <li class="nav-item">
                         <a class="text-white nav-link" href="#">Корзина</a>

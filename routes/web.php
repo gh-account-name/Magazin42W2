@@ -42,4 +42,10 @@ Route::group(['middleware'=>['auth', 'admin'], 'prefix'=>'admin'], function (){
 
     Route::get('/', [\App\Http\Controllers\PageController::class, 'categoriesPage'])->name('categoriesPage');
 
+    Route::get('/editCategory/{category}', [\App\Http\Controllers\PageController::class, 'editCategoryPage'])->name('editCategoryPage');
+
+    Route::put('/updateCategory/{category}', [\App\Http\Controllers\CategryController::class, 'update'])->name('updateCategory');
+
+    Route::get('/categories/get', [\App\Http\Controllers\CategryController::class, 'getCategories'])->name('getCategories');
+
 });
