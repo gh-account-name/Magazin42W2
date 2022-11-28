@@ -41,9 +41,11 @@ Route::group(['middleware'=>['auth', 'admin'], 'prefix'=>'admin'], function (){
 
     //--Страницы
 
-    Route::get('/', [\App\Http\Controllers\PageController::class, 'categoriesPage'])->name('categoriesPage');
+    Route::get('/categories', [\App\Http\Controllers\PageController::class, 'categoriesPage'])->name('categoriesPage');
 
     Route::get('/editCategory/{category?}', [\App\Http\Controllers\PageController::class, 'editCategoryPage'])->name('editCategoryPage');
+
+    Route::get('/products', [\App\Http\Controllers\PageController::class, 'productsPage'])->name('productsPage');
 
     //--Функции
 

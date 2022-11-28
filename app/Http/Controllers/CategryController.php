@@ -49,12 +49,12 @@ class CategryController extends Controller
         $category = Categry::query()->where('id', $request->id)->first();
         $category->title = $request->title;
         $category->update();
-        
+
         return redirect()->route('categoriesPage');
     }
 
-    public function destroy(Categry $category){
-        $category->delete();
-        return redirect()->back();
+    public function destroy(Request $request){
+        Categry::query()->where('id', $request->id_category)->delete();
+        return response()->json('Категория ' . $request->id_category . ' удалена', 200);
     }
 }

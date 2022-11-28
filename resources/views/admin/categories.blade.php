@@ -48,7 +48,7 @@
                             <td>@{{category.title}}</td>
                             <td class="d-flex justify-content-sm-around">
                                 <a :href="`{{route('editCategoryPage')}}/${category.id}`"><button type="button" class="btn btn-success">Редактировать</button></a>
-                                <button type="submit" class="btn btn-danger" >Удалить</button>
+                                <button type="submit" class="btn btn-danger" @click="deleteCategory(category.id)">Удалить</button>
                             </td>
                         </tr>
                     </tbody>
@@ -97,7 +97,7 @@
                     this.categories = data.categories;
                 },
 
-                deleteCategory(){
+                async deleteCategory(id){
                     const response = await fetch('{{route('deleteCategory')}}', {
                         method: 'post',
                         headers:{
@@ -108,7 +108,16 @@
                             id_category:id,
                         })
                     });
-                    
+
+                    if (response.status === 200){
+                        this.message = await response.json();
+                        setTimeout(()=>{
+                            this.message = null;
+                        }, 3000)
+                    }
+
+                    this.getCategories();
+
                 }
             },
             mounted(){

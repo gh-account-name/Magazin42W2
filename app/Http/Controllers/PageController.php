@@ -17,7 +17,7 @@ class PageController extends Controller
 
     public function categoriesPage(){
         $categories = Categry::all();
-        return view('admin.categories', ['categories'=>$categories]);
+        return view('admin.categories');
     }
 
     public function cabinetPage(){
@@ -26,5 +26,9 @@ class PageController extends Controller
 
     public function editCategoryPage(Categry $category){
         return view('admin.editCategory', ['category'=>$category]);
+    }
+
+    public function productsPage(){
+        return view('admin.products');
     }
 }
