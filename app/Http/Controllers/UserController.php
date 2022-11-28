@@ -86,6 +86,6 @@ class UserController extends Controller
 
     public function logout(){
         Auth::logout();
-        return redirect()->route('aboutUs');
+        return redirect()->route('welcomePage');
     }
 }

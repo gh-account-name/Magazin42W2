@@ -38,7 +38,7 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{route('categoriesPage')}}">Категории</a></li>
                                 <li><a class="dropdown-item" href="#">Заказы</a></li>
-                                <li><a class="dropdown-item" href="">Товары</a></li>
+                                <li><a class="dropdown-item" href="#">Товары</a></li>
                             </ul>
                         </li>
                     @endif

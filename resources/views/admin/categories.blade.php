@@ -47,12 +47,8 @@
                             <th scope="row">@{{index+1}}</th>
                             <td>@{{category.title}}</td>
                             <td class="d-flex justify-content-sm-around">
-                                <a href=""><button type="button" class="btn btn-success">Редактировать</button></a>
-                                <form action="" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-danger">Удалить</button>
-                                </form>
+                                <a :href="`{{route('editCategoryPage')}}/${category.id}`"><button type="button" class="btn btn-success">Редактировать</button></a>
+                                <button type="submit" class="btn btn-danger" >Удалить</button>
                             </td>
                         </tr>
                     </tbody>
@@ -100,6 +96,20 @@
                     const data = await response.json();
                     this.categories = data.categories;
                 },
+
+                deleteCategory(){
+                    const response = await fetch('{{route('deleteCategory')}}', {
+                        method: 'post',
+                        headers:{
+                            'X-CSRF-TOKEN': '{{csrf_token()}}',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id_category:id,
+                        })
+                    });
+                    
+                }
             },
             mounted(){
                 this.getCategories();

@@ -34,9 +34,22 @@ class CategryController extends Controller
         ], 200);
     }
 
-    public function update(Request $request, Categry $category){
+    public function update(Request $request){
+
+        $validation = Validator::make($request->all(),[
+            'title' => ['required',],
+        ],[
+            'title.required' => 'Обязательное поле',
+        ]);
+
+        if ($validation->fails()){
+            return response()->json($validation->errors(), 400);
+        }
+
+        $category = Categry::query()->where('id', $request->id)->first();
         $category->title = $request->title;
         $category->update();
+        
         return redirect()->route('categoriesPage');
     }
 

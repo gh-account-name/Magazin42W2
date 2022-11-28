@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,13 +39,19 @@ Route::get('/logout', [\App\Http\Controllers\UserController::class, 'logout'])->
 
 Route::group(['middleware'=>['auth', 'admin'], 'prefix'=>'admin'], function (){
 
-    Route::post('/addCategory', [\App\Http\Controllers\CategryController::class, 'addCategory'])->name('addCategory');
+    //--Страницы
 
     Route::get('/', [\App\Http\Controllers\PageController::class, 'categoriesPage'])->name('categoriesPage');
 
-    Route::get('/editCategory/{category}', [\App\Http\Controllers\PageController::class, 'editCategoryPage'])->name('editCategoryPage');
+    Route::get('/editCategory/{category?}', [\App\Http\Controllers\PageController::class, 'editCategoryPage'])->name('editCategoryPage');
 
-    Route::put('/updateCategory/{category}', [\App\Http\Controllers\CategryController::class, 'update'])->name('updateCategory');
+    //--Функции
+
+    Route::post('/addCategory', [\App\Http\Controllers\CategryController::class, 'addCategory'])->name('addCategory');
+
+    Route::post('/updateCategory', [\App\Http\Controllers\CategryController::class, 'update'])->name('updateCategory');
+
+    Route::post('/deleteCategory', [CategryController::class, 'destroy'])->name('deleteCategory');
 
     Route::get('/categories/get', [\App\Http\Controllers\CategryController::class, 'getCategories'])->name('getCategories');
 
