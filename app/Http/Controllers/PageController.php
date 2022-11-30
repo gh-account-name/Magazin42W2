@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categry;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -30,5 +31,9 @@ class PageController extends Controller
 
     public function productsPage(){
         return view('admin.products');
+    }
+
+    public function editProductPage(Product $product){
+        return view('admin.editProduct', ['product'=>$product]);
     }
 }

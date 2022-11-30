@@ -102,12 +102,8 @@
                                 >Количество на скаладе: @{{product.count}}</p>
                                 <p class="card-text text-black">Категория: @{{product.categry.title}}</p>
                                 <div class="buttons d-flex justify-content-between mt-3 w-100">
-                                    <a href=""><button type="button" class="btn btn-warning" style="font-size: 12px">Редактировать</button></a>
-                                    <form action="" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" class="btn btn-danger" style="font-size: 12px">Удалить</button>
-                                    </form>
+                                    <a :href="`{{route('editProductPage')}}/${product.id}`"><button type="button" class="btn btn-warning" style="font-size: 12px">Редактировать</button></a>
+                                    <button type="submit" @click="deleteProduct(product.id)" class="btn btn-danger" style="font-size: 12px">Удалить</button>
                                 </div>
                             </div>
                         </div>
@@ -171,7 +167,29 @@
                     const response = await fetch('{{route('getProducts')}}');
                     const data = await response.json();
                     this.products = data.products_admin;
+                },
+
+                async deleteProduct(id){
+                    const response = await fetch('{{route('deleteProduct')}}', {
+                        method:'post',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{csrf_token()}}',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id:id,
+                        })
+                    });
+
+                    if(response.status === 200){
+                        this.message = await response.json();
+                        setTimeout(()=>{
+                            this.message = null;
+                        }, 3000);
+                        this.getProducts();
+                    }
                 }
+
             },
             mounted(){
                 this.getCategories();

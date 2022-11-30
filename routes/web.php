@@ -50,6 +50,8 @@ Route::group(['middleware'=>['auth', 'admin'], 'prefix'=>'admin'], function (){
 
     Route::get('/products', [\App\Http\Controllers\PageController::class, 'productsPage'])->name('productsPage');
 
+    Route::get('/editProduct/{product?}', [\App\Http\Controllers\PageController::class, 'editProductPage'])->name('editProductPage');
+
     //--Функции
 
     Route::post('/addCategory', [\App\Http\Controllers\CategryController::class, 'addCategory'])->name('addCategory');
@@ -61,5 +63,9 @@ Route::group(['middleware'=>['auth', 'admin'], 'prefix'=>'admin'], function (){
     Route::get('/categories/get', [\App\Http\Controllers\CategryController::class, 'getCategories'])->name('getCategories');
 
     Route::post('/product/save', [ProductController::class, 'addProduct'])->name('addProduct');
+
+    Route::post('/product/update', [\App\Http\Controllers\ProductController::class, 'updateProduct'])->name('updateProduct');
+
+    Route::post('/deleteProduct', [ProductController::class, 'deleteProduct'])->name('deleteProduct');
 
 });
