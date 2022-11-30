@@ -4,82 +4,66 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function addProduct(Request $request){
+        $validation = Validator::make($request->all(),[
+            'title' => ['required'],
+            'img' => ['required', 'mimes:png,jpg,jpeg,bmp', 'max:1024'],
+            'category' => ['required'],
+            'price' => ['required', 'numeric', 'regex:/^\d*$|^\d*\.\d{1,2}$/'],
+            'count' => ['required', 'numeric'],
+        ], [
+            'title.required' => 'Обязательное поле для заполнения',
+            'title.regex' => 'Поле содержит только кирилицу',
+            'img.required' => 'Обязательное поле для заполнения',
+            'img.mimes' => 'Допустимое разрешение: png, jpg, jpeg',
+            'img.max' => 'Размер файла не должен превышать 1Мб',
+            'category.required' => 'Укажите категорию',
+            'price.required' => 'Обязательное поле для заполнения',
+            'price.numeric' => 'Поле должно быть числовым',
+            'price.regex' => 'Укажите цену в рублях',
+            'count.required' => 'Обязательное поле для заполнения',
+            'count.numeric' => 'Поле должно быть числовым',
+        ]);
+
+        if($validation->fails()){
+            return response()->json($validation->errors(), 400);
+        }
+
+        $path_img = '';
+        if($request->file('img')){
+            $path_img = $request->file('img')->store('public/img');
+        }
+
+        $product = new Product();
+        $product->title = $request->title;
+        $product->categry_id = $request->category;
+        $product->img = '/storage/' . $path_img;
+        $product->age = $request->age;
+        $product->age = $request->age;
+        $product->antagonist = $request->antagonist;
+        $product->price = $request->price;
+        $product->count = $request->count;
+
+        $product->save();
+
+        return response()->json('Товар добавлен', 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    public function getProducts(){
+        $products_admin = Product::with('categry')->orderByDesc('created_at')->get();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $products_catalog = Product::query()->with('categry')->where('count', '!=', 0)->orderByDesc('created_at')->get();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-        //
-    }
+        $products_slider = Product::query()->with('categry')->where('count', '!=', 0)->orderByDesc('created_at')->limit(5)->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Product $product)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Product $product)
-    {
-        //
+        return response()->json([
+            'products_admin'=> $products_admin,
+            'products_catalog' => $products_catalog,
+            'products_slider' => $products_slider,
+        ], 200);
     }
 }
