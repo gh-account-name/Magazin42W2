@@ -41,6 +41,8 @@ Route::get('/logout', [\App\Http\Controllers\UserController::class, 'logout'])->
 
 Route::get('/products/get', [ProductController::class, 'getProducts'])->name('getProducts');
 
+Route::get('/categories/get', [\App\Http\Controllers\CategryController::class, 'getCategories'])->name('getCategories');
+
 //--Мидлвар
 
 Route::group(['middleware'=>['auth', 'admin'], 'prefix'=>'admin'], function (){
@@ -62,8 +64,6 @@ Route::group(['middleware'=>['auth', 'admin'], 'prefix'=>'admin'], function (){
     Route::post('/updateCategory', [\App\Http\Controllers\CategryController::class, 'update'])->name('updateCategory');
 
     Route::post('/deleteCategory', [CategryController::class, 'destroy'])->name('deleteCategory');
-
-    Route::get('/categories/get', [\App\Http\Controllers\CategryController::class, 'getCategories'])->name('getCategories');
 
     Route::post('/product/save', [ProductController::class, 'addProduct'])->name('addProduct');
 
