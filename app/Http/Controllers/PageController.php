@@ -36,4 +36,8 @@ class PageController extends Controller
     public function editProductPage(Product $product){
         return view('admin.editProduct', ['product'=>$product]);
     }
+
+    public function catalogPage(){
+        return view('product.catalog');
+    }
 }

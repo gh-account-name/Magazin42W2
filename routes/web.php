@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategryController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,8 @@ Route::get('/registration', [\App\Http\Controllers\PageController::class, 'regis
 Route::get('/auth', [\App\Http\Controllers\PageController::class, 'authPage'])->name('authPage');
 
 Route::get('/userCabinet', [\App\Http\Controllers\PageController::class, 'cabinetPage'])->name('cabinetPage');
+
+Route::get('/catalog', [PageController::class, 'catalogPage'])->name('catalogPage');
 
 //--Функции
 

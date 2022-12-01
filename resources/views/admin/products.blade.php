@@ -39,7 +39,7 @@
             </div>
 
             <div class="mb-3 mt-3">
-                <label for="img" class="form-label">Картинка</label>
+                <label for="img" class="C">Картинка</label>
                 <input type="file" class="form-control" :class="errors.img ? 'is-invalid' : ''" id="img" name="img">
                 <div :class="errors.img ? 'invalid-feedback' : '' " v-for="error in errors.img">
                     @{{error}}
