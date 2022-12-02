@@ -23,7 +23,7 @@ class CartController extends Controller
             ->where('order_id', $order->id)
             ->where('product_id', $product->id)
             ->firstOrCreate(['order_id'=>$order->id], ['product_id'=>$product->id]);
-            
+
         if($cart->count){
 
             if($product->count > $cart->count){
@@ -46,13 +46,13 @@ class CartController extends Controller
             $order->save();
 
             return response()->json('Товар добавлен в корзину', 200);
-        }    
+        }
 
     }
 
     public function getCarts(){
 
-        $order = Order::query()->where('user_id', Auth::id())->where('status', 'новый')->first();
+        $order = Order::query()->where('user_id', Auth::id())->where('status', 'новый')->firstOrNew();
 
         $carts = Cart::query()->where('order_id', $order->id)->with('product')->get();
 
@@ -69,12 +69,12 @@ class CartController extends Controller
         $order = Order::query()
             ->where('user_id', Auth::id())
             ->where('status', 'новый')
-            ->firstOrCreate();
+            ->first();
 
         $cart = Cart::query()
             ->where('order_id', $order->id)
             ->where('product_id', $product->id)
-            ->firstOrCreate();
+            ->first();
 
         if ($cart->count > 1){
             $cart->count -= 1;
@@ -88,6 +88,24 @@ class CartController extends Controller
             $order->update();
             $cart->delete();
             return response()->json('Товар удалён', 200);
-        }     
+        }
+    }
+
+    public function deleteFromCart(Request $request){
+        $order = Order::query()
+            ->where('user_id', Auth::id())
+            ->where('status', 'новый')
+            ->first();
+
+        $cart = Cart::query()
+            ->where('order_id', $order->id)
+            ->where('product_id', $request->product_id)
+            ->first();
+
+        $order->summ -= $cart->summ;
+        $order->update();
+        $cart->delete();
+        return response()->json('Товар удалён', 200);
+
     }
 }

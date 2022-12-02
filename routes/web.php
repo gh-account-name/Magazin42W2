@@ -51,7 +51,11 @@ Route::post('/cart/add', [CartController::class, 'addToCart'])->name('addToCart'
 
 Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('removeFromCart');
 
-Route::get('carts/get', [CartController::class, 'getCarts'])->name('getCarts');
+Route::get('/carts/get', [CartController::class, 'getCarts'])->name('getCarts');
+
+Route::post('/cart/delete', [CartController::class, 'deleteFromCart'])->name('deleteFromCart');
+
+Route::post('/cart/order', [\App\Http\Controllers\OrderController::class, 'makeAnOrder'])->name('makeAnOrder');
 
 //--Мидлвар
 

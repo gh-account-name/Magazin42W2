@@ -56,7 +56,7 @@
                     @{{message}}
                 </div>
             </div>
-    
+
             <div v-if="message_danger" class="row d-flex justify-content-center mt-5">
                 <div class="col-12 text-center" :class="message_danger ? 'alert alert-danger': ''">
                     @{{message_danger}}
@@ -86,14 +86,14 @@
                             <button @click='addToCart(cart.product.id)' class="pmbut">+</button>
                         </div>
                         <div class="col-2 d-flex align-items-center">
-                            <button class="btn btn-danger">Удалить</button>
+                            <button class="btn btn-danger" @click = 'deleteFromCart(cart.product.id)'>Удалить</button>
                         </div>
                     </div>
 
                     <div v-if='carts.length != 0' class="sum mt-5">
                         <p class="h4">Итого: @{{order.summ}} руб.</p>
                     </div>
- 
+
                     <div v-if='carts.length == 0' class="mt-5">
                         <p class="h4 text-center">Корзина пуста</p>
                     </div>
@@ -102,18 +102,36 @@
             </div>
         </div>
 
-        <div class="makeOrder mt-3" v-if='carts.length != 0'>
-            <form action="" class="d-flex justify-content-between col-4 m-auto" method="POST">
-                @csrf
-                @method('put')
-                <div class="col-8">
-                    <input type="password" class="form-control" :class="errors.password ? 'is-invalid' : '' " placeholder="Введите пароль" name="password" id="password">
-                    <div :class="errors.password ? 'invalid-feedback' : '' " v-for="error in errors.password">
-                        @{{error}}
+        <div class="makeOrder mt-3 d-flex justify-content-center" v-if='carts.length != 0'>
+            <!-- Button trigger modal -->
+            <button type="button" class="col-3 btn btn-dark" data-bs-toggle="modal" data-bs-target="#makeOrderModal">
+                Оформить заказ
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="makeOrderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Оформление заказа</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form @submit.prevent = 'makeAnOrder' id="orderForm" class="col-12" method="POST">
+                                <div class="col-12 d-flex flex-wrap justify-content-center mb-3">
+                                    <input type="password" style="width: 66.6666%" class="form-control" :class="errors.password ? 'is-invalid' : '' " placeholder="Введите пароль" name="password" id="password">
+                                    <div style="width: 66.6666%" :class="errors.password ? 'invalid-feedback' : '' " v-for="error in errors.password">
+                                        @{{error}}
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary col-3" style="height: 40px">Заказать</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary col-3" style="height: 40px">Заказать</button>
-            </form>
+            </div>
         </div>
     </div>
 
@@ -182,7 +200,70 @@
                     this.getCarts();
                 },
 
-            }, 
+                async deleteFromCart(id){
+                    const response = await fetch('{{route('deleteFromCart')}}', {
+                        method: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{csrf_token()}}',
+                            'Content-Type': 'application/json',
+                        },
+                        body:JSON.stringify({
+                            product_id:id,
+                        })
+                    });
+
+                    if (response.status === 200){
+                        this.message = await response.json();
+                        setTimeout(() => {
+                            this.message = null;
+                        }, 3000);
+                    }
+
+                    this.getCarts();
+                },
+
+                async makeAnOrder(){
+                    const form = document.querySelector('#orderForm');
+                    const form_data = new FormData(form);
+                    const response = await fetch('{{route('makeAnOrder')}}', {
+                        method: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{csrf_token()}}',
+                        },
+                        body:form_data,
+                    });
+
+                    if (response.status === 200){
+                        document.querySelector('#makeOrderModal').classList.remove('show');
+                        document.body.classList.remove('modal-open');
+                        document.body.style ='';
+                        document.querySelector('.modal-backdrop').remove();
+                        document.querySelector('#password').value = '';
+                        this.getCarts();
+                        this.message = await response.json();
+                        setTimeout(()=>{
+                            this.message = null;
+                        }, 3000)
+                    }
+
+                    if (response.status === 400){
+                        this.errors = await response.json();
+                    }
+
+                    if (response.status === 403){
+                        document.querySelector('#makeOrderModal').classList.remove('show');
+                        document.body.classList.remove('modal-open');
+                        document.body.style ='';
+                        document.querySelector('.modal-backdrop').remove();
+                        document.querySelector('#password').value = '';
+                        this.message_danger = await response.json();
+                        setTimeout(()=>{
+                            this.message_danger = null;
+                        }, 3000)
+                    }
+                }
+
+            },
 
             mounted(){
                 this.getCarts();
