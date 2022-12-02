@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 
 //--Страницы
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcomePage');
@@ -31,6 +33,8 @@ Route::get('/userCabinet', [\App\Http\Controllers\PageController::class, 'cabine
 
 Route::get('/catalog', [PageController::class, 'catalogPage'])->name('catalogPage');
 
+Route::get('/cart', [PageController::class, 'cartPage'])->name('cartPage');
+
 //--Функции
 
 Route::post('/registration/save', [\App\Http\Controllers\UserController::class, 'register'])->name('register');
@@ -42,6 +46,12 @@ Route::get('/logout', [\App\Http\Controllers\UserController::class, 'logout'])->
 Route::get('/products/get', [ProductController::class, 'getProducts'])->name('getProducts');
 
 Route::get('/categories/get', [\App\Http\Controllers\CategryController::class, 'getCategories'])->name('getCategories');
+
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('addToCart');
+
+Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('removeFromCart');
+
+Route::get('carts/get', [CartController::class, 'getCarts'])->name('getCarts');
 
 //--Мидлвар
 

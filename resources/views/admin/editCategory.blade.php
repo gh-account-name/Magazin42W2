@@ -7,9 +7,9 @@
 @section('main')
     <div class="container d-flex flex-column align-items-center" id="editPage">
         <h2 class="mt-5">Редактировать категорию</h2>
-        <form @submit.prevent = "EditCategory" style="padding: 40px;" class="col-4" method="post" id='form'>
+        <form @submit.prevent = "EditCategory({{$category->id}})" style="padding: 40px;" class="col-4" method="post" id='form'>
             <div class="mb-3">
-                <input class="visually-hidden" type="text" name="id" value="{{$category->id}}">
+                {{-- <input class="visually-hidden" type="text" name="id" value="{{$category->id}}"> --}}
                 <label for="title" class="form-label">Название категории</label>
                 <input class="form-control" :class="errors.title ? 'is-invalid' : ''" type="text" id="title" name="title" value="{{$category->title}}">
                 <div :class="errors.title ? 'invalid-feedback' : '' " v-for="error in errors.title">
@@ -30,9 +30,10 @@
                 }
             },
             methods:{
-                async EditCategory(){
+                async EditCategory(id){
                     const form = document.querySelector('#form');
                     const form_data = new FormData(form);
+                    form_data.append('category_id', id);
                     const response = await fetch('{{route('updateCategory')}}', {
                         method: 'post',
                         headers:{

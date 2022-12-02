@@ -8,9 +8,9 @@
     <div class="container d-flex flex-column align-items-center" id="editProductPage">
         <h2 class="mt-5">Редактировать продукт №{{$product->id}}</h2>
 
-        <form @submit.prevent="UpdateProduct" id="editProductForm" style="padding: 40px;" class="col-6" method="post" enctype="multipart/form-data">
+        <form @submit.prevent="UpdateProduct({{$product->id}})" id="editProductForm" style="padding: 40px;" class="col-6" method="post" enctype="multipart/form-data">
 
-            <input type="text" class="visually-hidden" name="product_id" value="{{$product->id}}">
+            {{-- <input type="text" class="visually-hidden" name="product_id" value="{{$product->id}}"> --}}
 
             <div class="mb-3">
                 <label for="title" class="form-label">Название</label>
@@ -83,9 +83,10 @@
             },
 
             methods:{
-                async UpdateProduct(){
+                async UpdateProduct(id){
                     const form = document.querySelector('#editProductForm');
                     const form_data = new FormData(form);
+                    form_data.append('product_id', id);
                     const response = await fetch('{{route('updateProduct')}}', {
                         method: 'post',
                         headers:{

@@ -18,6 +18,19 @@
 
     <div class="container" id="Catalog">
         <h2 class="col-12 text-center mt-5">Каталог</h2>
+
+        <div v-if="message" class="row d-flex justify-content-center mt-5">
+            <div class="col-4 text-center" :class="message ? 'alert alert-success': ''">
+                @{{message}}
+            </div>
+        </div>
+
+        <div v-if="message_danger" class="row d-flex justify-content-center mt-5">
+            <div class="col-4 text-center" :class="message_danger ? 'alert alert-danger': ''">
+                @{{message_danger}}
+            </div>
+        </div>
+
         <div class="row">
             <div class="sort-fiter col-2" style="margin: 0 auto">
                 <h4>Фильтры</h4>
@@ -53,7 +66,7 @@
                                 <h5 class="card-title text-center text-black" style="height: 80px">@{{product.title}}</h5>
                                 <span class="d-flex justify-content-between">
                                     <p class="card-text text-black">@{{product.price}} руб.</p>
-                                    <button class="btn btn-warning" @click.prevent="addToCart" style="font-size: 0.7rem; height: 1.75rem">В корзину</button>
+                                    <button class="btn btn-warning" @click.prevent="addToCart(product.id)" style="font-size: 0.7rem; height: 1.75rem">В корзину</button>
                                 </span>
                             </div>
                         </a>
@@ -67,6 +80,7 @@
             data(){
                 return {
                     message: '',
+                    message_danger: '',
                     categories: [],
                     products:[],
                     sortOption: 'created_at',
@@ -89,8 +103,31 @@
                     this.products = data.products_catalog;
                 },
 
-                async addToCart(){
-                    return null
+                async addToCart(id){
+                    const response = await fetch('{{route('addToCart')}}', {
+                        method: 'post',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{csrf_token()}}',
+                            'Content-Type': 'application/json',
+                        },
+                        body:JSON.stringify({
+                            product_id:id,
+                        })
+                    });
+
+                    if (response.status === 200){
+                        this.message = await response.json();
+                        setTimeout(() => {
+                            this.message = null;
+                        }, 3000);
+                    }
+
+                    if (response.status === 400){
+                        this.message_danger = await response.json();
+                        setTimeout(() => {
+                            this.message_danger = null;
+                        }, 3000);
+                    }
                 }
             },
 
@@ -102,7 +139,7 @@
             computed: {
                 sortProducts(){                                                                              //↓ это не тернарный оператор, это что-то типо подстраховки вроде
                     let result = [...this.products].sort((product1,product2)=>String(product1[this.sortOption])?.localeCompare(String(product2[this.sortOption])));
-                    if (this.sortOption === 'created_at'){ //просто хочется чтобы было от новых к старым
+                    if (this.sortOption === 'created_at'){ //чтобы было от новых к старым
                         return result.reverse();
                     }
                     return result

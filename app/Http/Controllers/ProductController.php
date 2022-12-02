@@ -68,6 +68,7 @@ class ProductController extends Controller
     }
 
     public function updateProduct(Request $request){
+        dd($request);
         $validation = Validator::make($request->all(),[
             'title' => ['required'],
             'img' => ['mimes:png,jpg,jpeg,bmp', 'max:1024'],

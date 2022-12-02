@@ -40,4 +40,8 @@ class PageController extends Controller
     public function catalogPage(){
         return view('product.catalog');
     }
+
+    public function cartPage(){
+        return view('user.cart');
+    }
 }

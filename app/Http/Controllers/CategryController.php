@@ -46,7 +46,7 @@ class CategryController extends Controller
             return response()->json($validation->errors(), 400);
         }
 
-        $category = Categry::query()->where('id', $request->id)->first();
+        $category = Categry::query()->where('id', $request->category_id)->first();
         $category->title = $request->title;
         $category->update();
 
