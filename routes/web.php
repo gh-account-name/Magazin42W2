@@ -57,6 +57,8 @@ Route::post('/cart/delete', [CartController::class, 'deleteFromCart'])->name('de
 
 Route::post('/cart/order', [\App\Http\Controllers\OrderController::class, 'makeAnOrder'])->name('makeAnOrder');
 
+Route::get('/orders/get', [\App\Http\Controllers\OrderController::class, 'getOrders'])->name('getOrders');
+
 //--Мидлвар
 
 Route::group(['middleware'=>['auth', 'admin'], 'prefix'=>'admin'], function (){
@@ -71,6 +73,8 @@ Route::group(['middleware'=>['auth', 'admin'], 'prefix'=>'admin'], function (){
 
     Route::get('/editProduct/{product?}', [\App\Http\Controllers\PageController::class, 'editProductPage'])->name('editProductPage');
 
+    Route::get('/orders', [PageController::class, 'adminOrdersPage'])->name('adminOrdersPage');
+
     //--Функции
 
     Route::post('/addCategory', [\App\Http\Controllers\CategryController::class, 'addCategory'])->name('addCategory');
@@ -84,5 +88,9 @@ Route::group(['middleware'=>['auth', 'admin'], 'prefix'=>'admin'], function (){
     Route::post('/product/update', [\App\Http\Controllers\ProductController::class, 'updateProduct'])->name('updateProduct');
 
     Route::post('/deleteProduct', [ProductController::class, 'deleteProduct'])->name('deleteProduct');
+
+    Route::post('/orders/confirm', [\App\Http\Controllers\OrderController::class, 'confirmOrder'])->name('confirmOrder');
+
+    Route::post('/orders/reject', [\App\Http\Controllers\OrderController::class, 'rejectOrder'])->name('rejectOrder');
 
 });

@@ -44,4 +44,8 @@ class PageController extends Controller
     public function cartPage(){
         return view('user.cart');
     }
+
+    public function adminOrdersPage(){
+        return view('admin.orders');
+    }
 }
