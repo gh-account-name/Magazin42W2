@@ -52,23 +52,29 @@
             <div class="sort-fiter d-flex justify-content-between flex-wrap col-10 mb-5" style="margin: 0 auto">
                 <div class=" col-2 mt-4">
                     <label class="form-label">По имени</label>
-                    <input v-model='minPrice' type="text" class="form-control" placeholder="Начните вводить">
+                    <input v-model='searchValue' type="text" class="form-control" placeholder="Начните вводить">
                 </div>
                 <div class=" col-3 mt-4">
                     <label class="form-label" for="attribute-select">Сортировать по:</label>
                     <select v-model='sortOption' class="form-select" name="attribute-select" id="attribute-select">
+                        <option value="">Нет</option>
                         <option value="created_at">По новизне</option>
-                        <option value="price">По цене</option>
-                        <option value="age">По дате издания</option>
-                        <option value="title">По названию</option>
+                        <option value="summ">По сумме заказа</option>
+                        <option value="status">По статусу</option>
                     </select>
                 </div>
                 <div class=" col-3 mt-4">
                     <label class="form-label" for="category-select">По статусу:</label>
                     <select v-model='filterOption' class="form-select" name="category-select" id="category-select">
                         <option value="">Все</option>
-                        <option v-for='category in categories' :value="category.id">@{{category.title}}</option>
+                        <option value="в обработке">В обработке</option>
+                        <option value="отклонён">Отклонён</option>
+                        <option value="подтверждён">Подтверждён</option>
                     </select>
+                </div>
+                <div class=" col-2 mt-4 d-flex align-items-center justify-content-between">
+                    <label class="form-label m-0" for="reverseCheck">В обратном порядке</label>
+                    <input type="checkbox" id="reverseCheck" name="reverseCheck" v-model='reverseCheck'>
                 </div>
             </div>
 
@@ -82,7 +88,7 @@
                         <div class="col-3">Действие</div>
                     </div>
 
-                        <div class="tbody row" v-for="(order, index) in orders">
+                        <div class="tbody row" v-for="(order, index) in searchName">
                             <div class="col-1 d-flex align-items-center justify-content-center" style="font-weight: bold">@{{index + 1}}</div>
                             <div class="col-4 d-flex align-items-center" style="font-weight: bold">@{{order.user.name}} @{{order.user.surname}} @{{order.user.patronymic}}</div>
                             <div class="col-2 d-flex align-items-center" style="font-weight: bold;">@{{order.summ}} руб.</div>
@@ -184,6 +190,10 @@
                     message:'',
                     message_danger: '',
                     orders: [],
+                    sortOption: '',
+                    filterOption: '',
+                    searchValue: '',
+                    reverseCheck: false,
                 }
             },
 
@@ -239,12 +249,44 @@
                     if(response.status === 200){
                         window.location = response.url;
                     }
-                }
+                }, 
             },
 
             mounted(){
                 this.getOrders();
-            }
+            },
+
+            computed:{
+                sortOrders(){      
+                    if(this.sortOption === 'summ'){
+                        return [...this.orders].sort((order1,order2)=>order1[this.sortOption] - order2[this.sortOption]);
+                    }                                                                        //↓ это не тернарный оператор, это что-то типо подстраховки вроде
+                    let result = [...this.orders].sort((order1,order2)=>order1[this.sortOption]?.localeCompare(order2[this.sortOption]));
+                    if (this.sortOption === 'created_at'){ //чтобы было от новых к старым
+                        return result.reverse();
+                    }
+                    return result
+                },
+
+                filterOrders(){
+                    if(this.filterOption){
+                        return [...this.sortOrders].filter(order => order.status == this.filterOption);
+                    }
+                    return [...this.sortOrders]
+                },
+
+                searchName(){
+                    if(this.searchValue){
+                        return [...this.filterOrders].filter(order => `${order.user.name} ${order.user.surname} ${order.user.patronymic}`.includes(this.searchValue));
+                    }
+                    if(this.reverseCheck){
+                        return [...this.filterOrders].reverse()
+                    } else{
+                        return [...this.filterOrders]
+                    }
+                    
+                }
+            },
         }
 
         Vue.createApp(Orders).mount('#ordersPage');
