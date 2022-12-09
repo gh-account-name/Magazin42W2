@@ -26,14 +26,14 @@
                 </div>
                 @if(Auth::user()->patronymic)
                 <div class="row col-12">
-                    <b class="w-auto p-0">Имя:&nbsp;</b><p class="w-auto p-0">{{Auth::user()->patronymic}}</p>
+                    <b class="w-auto p-0">Отчество:&nbsp;</b><p class="w-auto p-0">{{Auth::user()->patronymic}}</p>
                 </div>
                 @endif
                 <div class="row col-12">
                     <b class="w-auto p-0">Email:&nbsp;</b><p class="w-auto p-0">{{Auth::user()->email}}</p>
                 </div>
                 <div class="row col-12">
-                    <a class="btn btn-warning col-4">Изменить данные</a>
+                    <a href="{{route('editUser')}}" class="btn btn-warning col-4">Изменить данные</a>
                 </div>
             </div>
         </div>

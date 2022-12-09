@@ -88,4 +88,68 @@ class UserController extends Controller
         Auth::logout();
         return redirect()->route('welcomePage');
     }
+
+    public function editUserSave(Request $request){
+        $validation = Validator::make($request->all(), [
+            'name'=>['required', 'regex:/[А-Яа-яЁё]/u'],
+            'surname'=>['required', 'regex:/[А-Яа-яЁё]/u'],
+            'patronymic'=>['regex:/[А-Яа-яЁё]/u',  'nullable'],
+            'email'=>['required', 'email:frc'],
+            'login'=>['required', 'regex:/[A-Za-zА-ЯЁа-яё0-9]/u'],
+            'newPassword'=>['min:6', 'max:12', 'nullable'],
+            'password'=>['required', 'min:6', 'max:12'],
+        ], [
+            'name.required'=>'Это обязательное поле',
+            'name.regex'=>'Допускается только кирилица',
+            'surname.required'=>'Это обязательное поле',
+            'surname.regex'=>'Допускается только кирилица',
+            'patronymic.regex'=>'Допускается только кирилица',
+            'email.required'=>'Это обязательное поле',
+            'email.email'=>'Пример заполнения: example@email.com',
+//            'email.unique'=>'Данный адрес уже зарегистрирован',
+            'login.required'=>'Это обязательное поле',
+            'login.regex'=>'Не допускается использование спецсимволов',
+            'login.unique'=>'Данный логин уже используется',
+            'password.required'=>'Это обязательное поле',
+            'password.min'=>'Минимальная длина пароля: 6 символов',
+            'password.max'=>'Максимальная длина пароля: 12 символов',
+            'newPassword.min'=>'Минимальная длина пароля: 6 символов',
+            'newPassword.max'=>'Максимальная длина пароля: 12 символов',
+        ]);
+        if ($validation->fails()){
+            return response()->json($validation->errors(), 400);
+        }
+
+        $user = User::query()->where('email',$request->email)->where('id' , '!=', Auth::id())->first();
+        if($user){
+            $validation->getMessageBag()->add('email', 'Данный адрес уже зарегистрирован');
+            return response()->json($validation->errors(), 400);
+        }
+
+        $user = User::query()->where('login',$request->login)->where('id' , '!=', Auth::id())->first();
+        if($user){
+            $validation->getMessageBag()->add('login', 'Данный логин уже занят');
+            return response()->json($validation->errors(), 400);
+        }
+
+        $user = User::query()->where('id', Auth::id())->first();
+        if($user->password != md5($request->password)){
+            $validation->getMessageBag()->add('password', 'Неверный пароль');
+            return response()->json($validation->errors(), 400);
+        }
+
+        $user->name = $request->name;
+        $user->surname = $request->surname;
+        $user->patronymic = $request->patronymic;
+        $user->email = $request->email;
+        $user->login = $request->login;
+
+        if ($request->newPassword){
+            $user->password = md5($request->newPassword);
+        }
+
+        $user->update();
+
+        return redirect()->route('cabinetPage');
+    }
 }

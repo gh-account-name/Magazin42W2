@@ -42,6 +42,10 @@ Route::get('/product/{product?}', [PageController::class, 'productPage'])->name(
 
 Route::get('/contacts', [PageController::class, 'contactsPage'])->name('contactsPage');
 
+Route::get('/editUser', [PageController::class, 'editUser'])->name('editUser');
+
+Route::post('/editUser/save', [UserController::class, 'editUserSave'])->name('editUserSave');
+
 //--Функции
 
 Route::post('/registration/save', [\App\Http\Controllers\UserController::class, 'register'])->name('register');

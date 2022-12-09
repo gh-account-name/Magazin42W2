@@ -14,7 +14,7 @@
             transform: scale(1.01);
             transition: 0.3s;
         }
-    </style>    
+    </style>
 
     <div class="container" id="Catalog">
         <h2 class="col-12 text-center mt-5">Каталог</h2>
@@ -66,7 +66,12 @@
                                 <h5 class="card-title text-center text-black" style="height: 80px">@{{product.title}}</h5>
                                 <span class="d-flex justify-content-between">
                                     <p class="card-text text-black">@{{product.price}} руб.</p>
+                                    @auth()
                                     <button class="btn btn-warning" @click.prevent="addToCart(product.id)" style="font-size: 0.7rem; height: 1.75rem">В корзину</button>
+                                    @endauth
+                                    @guest()
+                                        <object><a href="{{route('authPage')}}" class="btn btn-warning" style="font-size: 0.7rem; height: 1.75rem">В корзину</a></object>
+                                    @endguest
                                 </span>
                             </div>
                         </a>
@@ -134,7 +139,7 @@
             mounted(){
                 this.getCategories();
                 this.getProducts();
-            }, 
+            },
 
             computed: {
                 sortProducts(){                                                                              //↓ это не тернарный оператор, это что-то типо подстраховки вроде

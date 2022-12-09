@@ -59,4 +59,8 @@ class PageController extends Controller
     public function contactsPage(){
         return view('contacts');
     }
+
+    public function editUser(){
+        return view('user.editUser');
+    }
 }

@@ -16,7 +16,7 @@
         url('https://wallpaper.dog/large/20515514.jpg');
         /* background-size: cover; */
     }
-    
+
     .container{
         background-color: white;
         min-height: 100vh;
@@ -26,6 +26,7 @@
 </style>
 <body>
 <script src="{{asset('public/js/vue.global.js')}}"></script>
+<script src="https://code.jquery.com/jquery-3.6.1.js"></script>
 @include('layout.navbar')
 @yield('main')
 </body>
