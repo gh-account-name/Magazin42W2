@@ -115,4 +115,6 @@ class ProductController extends Controller
         $product = Product::query()->where('id', $request->id)->delete();
         return response()->json('Товар ' . $request->id . ' удалён');
     }
+
+    
 }

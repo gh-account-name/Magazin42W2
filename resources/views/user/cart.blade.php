@@ -77,7 +77,7 @@
                         <div class="col-1 d-flex align-items-center justify-content-center" style="font-weight: bold">@{{index+1}}</div>
                         <div class="col-5 d-flex align-items-center">
                             <img :src="cart.product.img" alt="product" style="width:15%; margin-right: 5%">
-                                <a href=""><p style="font-weight: bold; margin:0;">@{{cart.product.title}}</p></a>
+                                <a :href="`{{route('productPage')}}/${cart.product.id}`"><p style="font-weight: bold; margin:0;">@{{cart.product.title}}</p></a>
                         </div>
                         <div class="col-2 d-flex align-items-center" style="font-weight: bold">@{{cart.summ}} руб.</div>
                         <div class="col-2 d-flex align-items-center" style="font-weight: bold">

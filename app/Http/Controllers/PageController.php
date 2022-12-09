@@ -17,7 +17,6 @@ class PageController extends Controller
     }
 
     public function categoriesPage(){
-        $categories = Categry::all();
         return view('admin.categories');
     }
 
@@ -47,5 +46,17 @@ class PageController extends Controller
 
     public function adminOrdersPage(){
         return view('admin.orders');
+    }
+
+    public function userOrdersPage(){
+        return view('user.orders');
+    }
+
+    public function productPage(Product $product){
+        return view('product.product', ['product'=>$product]);
+    }
+
+    public function contactsPage(){
+        return view('contacts');
     }
 }

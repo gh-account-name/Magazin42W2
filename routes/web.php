@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -35,6 +36,12 @@ Route::get('/catalog', [PageController::class, 'catalogPage'])->name('catalogPag
 
 Route::get('/cart', [PageController::class, 'cartPage'])->name('cartPage');
 
+Route::get('/myOrders', [PageController::class, 'userOrdersPage'])->name('userOrdersPage');
+
+Route::get('/product/{product?}', [PageController::class, 'productPage'])->name('productPage');
+
+Route::get('/contacts', [PageController::class, 'contactsPage'])->name('contactsPage');
+
 //--Функции
 
 Route::post('/registration/save', [\App\Http\Controllers\UserController::class, 'register'])->name('register');
@@ -58,6 +65,8 @@ Route::post('/cart/delete', [CartController::class, 'deleteFromCart'])->name('de
 Route::post('/cart/order', [\App\Http\Controllers\OrderController::class, 'makeAnOrder'])->name('makeAnOrder');
 
 Route::get('/orders/get', [\App\Http\Controllers\OrderController::class, 'getOrders'])->name('getOrders');
+
+Route::get('/deleteOrder/{order?}', [OrderController::class, 'destroy'])->name('deleteOrder');
 
 //--Мидлвар
 

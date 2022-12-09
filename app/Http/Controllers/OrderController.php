@@ -41,7 +41,7 @@ class OrderController extends Controller
 
     public function getOrders(){
         $orders_admin = Order::query()->where('status', '!=', 'новый')->with('user')->with('carts.product')->get();
-        $orders_user = Order::query()->where('status', '!=', 'новый')->where('id', Auth::id())->with('user')->with('carts.product')->get();
+        $orders_user = Order::query()->where('status', '!=', 'новый')->where('user_id', Auth::id())->with('user')->with('carts.product')->withSum('carts', 'count')->get();
         return response()->json([
             'orders_admin' => $orders_admin,
             'orders_user' => $orders_user,
@@ -75,5 +75,10 @@ class OrderController extends Controller
         $order->comment = $request->comment;
         $order->update();
         return redirect()->back();
+    }
+
+    public function destroy(Order $order){
+        $order->delete();
+        return response()->json('Заказ №' . $order->id . ' отменён');
     }
 }

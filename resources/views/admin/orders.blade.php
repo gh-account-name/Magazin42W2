@@ -58,7 +58,7 @@
                     <label class="form-label" for="attribute-select">Сортировать по:</label>
                     <select v-model='sortOption' class="form-select" name="attribute-select" id="attribute-select">
                         <option value="">Нет</option>
-                        <option value="created_at">По новизне</option>
+                        <option value="updated_at">По новизне</option>
                         <option value="summ">По сумме заказа</option>
                         <option value="status">По статусу</option>
                     </select>
@@ -128,7 +128,7 @@
                                                             <div class="col-1 d-flex align-items-center justify-content-center" style="font-weight: bold">@{{index+1}}</div>
                                                             <div class="col-5 d-flex align-items-center">
                                                                 <img :src="cart.product.img" alt="product" style="width:15%; margin-right: 5%">
-                                                                <a href=""><p style="font-weight: bold; margin:0;">@{{cart.product.title}}</p></a>
+                                                                <a :href="`{{route('productPage')}}/${cart.product.id}`"><p style="font-weight: bold; margin:0;">@{{cart.product.title}}</p></a>
                                                             </div>
                                                             <div class="col-3 d-flex align-items-center" style="font-weight: bold">@{{cart.summ}} руб.</div>
                                                             <div class="col-3 d-flex align-items-center" style="font-weight: bold">
@@ -137,6 +137,7 @@
                                                         </div>
                                                         <p class="fw-bold mt-3">Итого: @{{ order.summ }} руб.</p>
                                                     </div>
+                                                    <div v-if='order.comment' class="comment text-danger">Причина отклонения заказа: @{{order.comment}}</div>
                                                 </div>
                                                 <div class="modal-footer border-0">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
@@ -262,7 +263,7 @@
                         return [...this.orders].sort((order1,order2)=>order1[this.sortOption] - order2[this.sortOption]);
                     }                                                                        //↓ это не тернарный оператор, это что-то типо подстраховки вроде
                     let result = [...this.orders].sort((order1,order2)=>order1[this.sortOption]?.localeCompare(order2[this.sortOption]));
-                    if (this.sortOption === 'created_at'){ //чтобы было от новых к старым
+                    if (this.sortOption === 'updated_at'){ //чтобы было от новых к старым
                         return result.reverse();
                     }
                     return result

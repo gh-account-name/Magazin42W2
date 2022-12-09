@@ -95,7 +95,7 @@
                         <div class="card" style="width: 300px; box-shadow: 0 0 10px black; text-decoration: none;">
                             <img :src="product.img" class="card-img-top" alt="product" style="height: 100%">
                             <div class="card-body" style="position: relative">
-                                <a href="" class="text-decoration-none"><h5 class="card-title text-center text-black" style="height: 50px">@{{product.title}}</h5></a>
+                                <a :href="`{{route('productPage')}}/${product.id}`" class="text-decoration-none"><h5 class="card-title text-center text-black" style="height: 50px">@{{product.title}}</h5></a>
                                 <p class="card-text text-black">@{{product.price}} руб.</p>
                                 <p class="card-text"
                                 :class="product.count == 0 ? 'text-danger' : product.count < 10 ? 'text-warning' : '' "

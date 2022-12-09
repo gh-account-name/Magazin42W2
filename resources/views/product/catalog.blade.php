@@ -59,7 +59,7 @@
             <div class="products col-8 m-auto mt-5">
                 <div class="row row-cols-1 row-cols-md-3 g-4">                         <!-- ↓ забираем результат из последней функции которая работает со списком продуктов -->
                     <div class="col d-flex justify-content-center" v-for="product in filterByPrice">
-                        <a href="#prod" class="card" style="box-shadow: 0px 0px 10px black; text-decoration: none;">
+                        <a :href="`{{route('productPage')}}/${product.id}`" class="card" style="box-shadow: 0px 0px 10px black; text-decoration: none;">
                             <img :src="product.img" class="card-img-top" alt="product" style="height: 100%">
                             <div class="card-body" style="position: relative">
                                 <p class="card-text text-center m-0" style="font-size: 0.7rem; color:rgba(0, 0, 0, .5);">@{{product.categry.title}}</p>

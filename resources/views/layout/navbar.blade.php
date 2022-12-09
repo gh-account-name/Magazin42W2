@@ -21,6 +21,9 @@
                 <li class="nav-item">
                     <a class="nav-link active text-white" aria-current="page" href="{{route('catalogPage')}}">Каталог</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link active text-white" aria-current="page" href="{{route('contactsPage')}}">Где нас найти?</a>
+                </li>
                 @guest
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('authPage')}}">Авторизация</a>
@@ -49,7 +52,7 @@
                         <a class="text-white nav-link" href="{{route('cartPage')}}">Корзина</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">Мои заказы</a>
+                        <a class="nav-link text-white" href="{{route('userOrdersPage')}}">Мои заказы</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{route('logout')}}">Выйти</a>
